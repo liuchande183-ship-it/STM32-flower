@@ -55,26 +55,26 @@ void Delay_1ms(unsigned int Del_1ms)
 	}
 }			   
 
-static void IIC_Start()
+void IIC_Start()
 {
 	OLED_SCLK_Set() ;
 	OLED_SDIN_Set();
 	OLED_SDIN_Clr();
 	OLED_SCLK_Clr();
 }
-static void IIC_Stop()
+void IIC_Stop()
 {
 	OLED_SCLK_Set() ;
 //	OLED_SCLK_Clr();
 	OLED_SDIN_Clr();
 	OLED_SDIN_Set();
 }
-static void IIC_Wait_Ack()
+void IIC_Wait_Ack()
 {
 	OLED_SCLK_Set() ;
 	OLED_SCLK_Clr();
 }
-static void Write_IIC_Byte(unsigned char IIC_Byte)
+void Write_IIC_Byte(unsigned char IIC_Byte)
 {
 	unsigned char i;
 	unsigned char m,da;
@@ -93,7 +93,7 @@ static void Write_IIC_Byte(unsigned char IIC_Byte)
 		OLED_SCLK_Clr();
 		}
 }
-static void Write_IIC_Command(unsigned char IIC_Command)
+void Write_IIC_Command(unsigned char IIC_Command)
 {
 	IIC_Start();
 	Write_IIC_Byte(0x78);            //Slave address,SA0=0
@@ -104,7 +104,7 @@ static void Write_IIC_Command(unsigned char IIC_Command)
 	IIC_Wait_Ack();	
 	IIC_Stop();
 }
-static void Write_IIC_Data(unsigned char IIC_Data)
+void Write_IIC_Data(unsigned char IIC_Data)
 {
 	IIC_Start();
 	Write_IIC_Byte(0x78);			//D/C#=0; R/W#=0
@@ -282,7 +282,7 @@ void oled_ShowCHinese(u8 x,u8 y,u8 no)
 }
 void OLED_ShowFNum(u8 x,u8 y,float Fnum,u8 size1)
 {
-	uint8_t Data[]= " ";                             //创建目标数组，用来存放转换后的字符数据 
+	uint8_t Data[16] = {0};                         //为浮点转字符串预留足够空间
     sprintf((char*)Data,"%.3f",Fnum);                       //保留小数点后3位小数，打印到Data数组中
 	oled_ShowString(x,y,Data,size1);            //调用OLED字符串显示函数，在OLED屏上显示
 }
@@ -396,9 +396,3 @@ void oled_DisplayTurn(uint8_t i)
 			OLED_WR_Byte(0xA0,OLED_CMD);
 		}
 }
-
-
-
-
-
-
